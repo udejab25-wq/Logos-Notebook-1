@@ -1,0 +1,23 @@
+{
+  "name": "Logos Notebook",
+  "short_name": "Logos",
+  "description": "An offline Bible with a voice-enabled notebook.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fbf8f1",
+  "theme_color": "#fbf8f1",
+  "categories": ["books", "education", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Notes", "url": "./?view=notes", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Search", "url": "./?view=search", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

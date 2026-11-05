@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Logos Notebook</title>
+<meta name="description" content="An offline Bible with a voice-enabled notebook.">
+<meta name="theme-color" content="#fbf8f1" id="meta-theme">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Logos">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-view="read">
+<div id="app">
+
+  <header id="top">
+    <button id="btn-ref" class="ref-btn" aria-haspopup="dialog" aria-label="Choose book and chapter">
+      <span id="ref-label">John 3</span><i data-i="chev"></i>
+    </button>
+    <label class="sel-wrap" title="Translation">
+      <span class="sr">Translation</span>
+      <select id="sel-trans" aria-label="Translation"></select>
+    </label>
+    <div class="grow"></div>
+    <span id="net" class="net" hidden>Offline</span>
+    <button id="btn-install" class="pill" hidden>Install app</button>
+  </header>
+
+  <nav id="nav" aria-label="Main">
+    <button data-go="read" aria-label="Read"><i data-i="book"></i><span>Read</span></button>
+    <button data-go="notes" aria-label="Notes"><i data-i="notes"></i><span>Notes</span></button>
+    <button data-go="search" aria-label="Search"><i data-i="search"></i><span>Search</span></button>
+    <button data-go="more" aria-label="More"><i data-i="menu"></i><span>More</span></button>
+  </nav>
+
+  <main id="main">
+
+    <!-- READ -->
+    <section id="view-read" class="view" aria-label="Bible reader">
+      <div class="toolbar">
+        <button id="btn-prev" class="tb" aria-label="Previous chapter"><i data-i="left"></i></button>
+        <button id="btn-next" class="tb" aria-label="Next chapter"><i data-i="right"></i></button>
+        <button id="btn-listen" class="tb wide" aria-label="Listen to this chapter"><i data-i="speaker"></i><span>Listen</span></button>
+        <button id="btn-parallel" class="tb wide" aria-pressed="false" aria-label="Parallel translations"><i data-i="columns"></i><span>Parallel</span></button>
+        <select id="sel-trans2" aria-label="Second translation" hidden></select>
+        <div class="grow"></div>
+        <button id="btn-smaller" class="tb" aria-label="Smaller text">A−</button>
+        <button id="btn-larger" class="tb" aria-label="Larger text">A+</button>
+      </div>
+      <div id="reader" class="reader" tabindex="-1"></div>
+      <div id="selbar" class="selbar" hidden>
+        <div class="sel-info" id="sel-info"></div>
+        <div class="sel-actions">
+          <span class="swatches" role="group" aria-label="Highlight">
+            <button class="sw" data-hl="yellow" aria-label="Highlight yellow"></button>
+            <button class="sw" data-hl="green" aria-label="Highlight green"></button>
+            <button class="sw" data-hl="blue" aria-label="Highlight blue"></button>
+            <button class="sw" data-hl="pink" aria-label="Highlight pink"></button>
+            <button class="sw none" data-hl="" aria-label="Remove highlight">×</button>
+          </span>
+          <button class="chip" id="sel-bookmark">Bookmark</button>
+          <button class="chip" id="sel-note">Add to note</button>
+          <button class="chip" id="sel-copy">Copy</button>
+          <button class="chip" id="sel-compare">Compare</button>
+          <button class="chip" id="sel-notes-for" hidden>Notes</button>
+          <button class="chip" id="sel-listen">Listen from here</button>
+          <button class="chip ghost" id="sel-clear" aria-label="Clear selection">Done</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <section id="view-notes" class="view" aria-label="Notebook">
+      <div class="notes-grid">
+        <div class="notes-list-pane">
+          <div class="pane-head">
+            <select id="nb-filter" aria-label="Notebook"></select>
+            <button id="btn-new-note" class="primary" aria-label="New note"><i data-i="plus"></i><span>New note</span></button>
+          </div>
+          <input id="note-search" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off">
+          <div id="ref-filter" class="ref-filter" hidden></div>
+          <ul id="note-list" class="note-list" aria-label="Notes"></ul>
+        </div>
+        <div class="notes-edit-pane" id="edit-pane">
+          <div class="empty" id="note-empty">
+            <p><strong>Your notebook</strong></p>
+            <p>Create a note, or select verses in the reader and choose <em>Add to note</em>.</p>
+            <p class="muted">Tap the microphone to dictate. Say “John three sixteen” and it becomes a verse link.</p>
+          </div>
+          <div class="editor" id="editor" hidden>
+            <div class="ed-top">
+              <button id="btn-back" class="tb back" aria-label="Back to notes"><i data-i="left"></i></button>
+              <input id="note-title" type="text" placeholder="Title" aria-label="Note title" autocomplete="off">
+            </div>
+            <div class="ed-meta">
+              <select id="note-nb" aria-label="Notebook for this note"></select>
+              <input id="note-tags" type="text" placeholder="Tags, separated by commas" aria-label="Tags" autocomplete="off">
+            </div>
+            <div class="ed-tools" role="toolbar" aria-label="Note tools">
+              <button id="btn-dictate" class="tool" aria-pressed="false"><i data-i="mic"></i><span>Dictate</span></button>
+              <button id="btn-read-note" class="tool"><i data-i="speaker"></i><span>Read aloud</span></button>
+              <button id="btn-ins-verse" class="tool"><i data-i="quote"></i><span>Insert verse</span></button>
+              <button id="btn-export-note" class="tool"><i data-i="download"></i><span>Export</span></button>
+              <button id="btn-del-note" class="tool danger"><i data-i="trash"></i><span>Delete</span></button>
+            </div>
+            <div id="dict-status" class="dict-status" aria-live="polite" hidden></div>
+            <textarea id="note-body" placeholder="Write, or tap Dictate and speak…" aria-label="Note text" spellcheck="true"></textarea>
+            <div id="note-refs" class="refs" aria-label="Verses mentioned in this note"></div>
+            <div class="ed-foot muted" id="note-meta"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section id="view-search" class="view" aria-label="Search">
+      <form id="search-form" class="search-form" role="search">
+        <input id="q" type="search" placeholder="Search words, or type a reference like Rom 8:28" aria-label="Search the Bible" autocomplete="off" enterkeyhint="search">
+        <select id="q-scope" aria-label="Search in">
+          <option value="all">Whole Bible</option>
+          <option value="ot">Old Testament</option>
+          <option value="nt">New Testament</option>
+        </select>
+        <button class="primary" type="submit">Search</button>
+      </form>
+      <div id="results" class="results" aria-live="polite"></div>
+    </section>
+
+    <!-- MORE -->
+    <section id="view-more" class="view" aria-label="Library and settings">
+      <div class="more" id="more"></div>
+    </section>
+
+  </main>
+
+  <div id="player" class="player" hidden>
+    <div class="pl-info">
+      <div class="pl-title" id="pl-title"></div>
+      <div class="pl-sub muted" id="pl-sub"></div>
+    </div>
+    <div class="pl-ctrl">
+      <button id="pl-prev" class="tb" aria-label="Previous verse"><i data-i="skipback"></i></button>
+      <button id="pl-play" class="tb big" aria-label="Play or pause"><i data-i="play"></i></button>
+      <button id="pl-next" class="tb" aria-label="Next verse"><i data-i="skipfwd"></i></button>
+    </div>
+    <div class="pl-opts">
+      <label class="mini"><span class="sr">Speed</span>
+        <select id="pl-rate" aria-label="Speed">
+          <option value="0.75">0.75×</option><option value="1" selected>1×</option>
+          <option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option>
+        </select></label>
+      <label class="mini"><span class="sr">Sleep timer</span>
+        <select id="pl-sleep" aria-label="Sleep timer">
+          <option value="0">Sleep: off</option><option value="15">15 min</option>
+          <option value="30">30 min</option><option value="45">45 min</option><option value="60">60 min</option>
+        </select></label>
+      <button id="pl-close" class="tb" aria-label="Stop and close player"><i data-i="close"></i></button>
+    </div>
+  </div>
+
+</div>
+
+<dialog id="dlg-picker" aria-labelledby="picker-title">
+  <div class="dlg-head">
+    <button id="picker-back" class="tb" aria-label="Back to books" hidden><i data-i="left"></i></button>
+    <h2 id="picker-title">Choose a book</h2>
+    <button class="tb" data-close aria-label="Close"><i data-i="close"></i></button>
+  </div>
+  <div id="picker-body" class="picker-body"></div>
+</dialog>
+
+<dialog id="dlg-compare" aria-labelledby="compare-title">
+  <div class="dlg-head">
+    <h2 id="compare-title">Compare</h2>
+    <button class="tb" data-close aria-label="Close"><i data-i="close"></i></button>
+  </div>
+  <div id="compare-body" class="compare-body"></div>
+</dialog>
+
+<dialog id="dlg-insert" aria-labelledby="ins-title">
+  <div class="dlg-head">
+    <h2 id="ins-title">Insert a verse</h2>
+    <button class="tb" data-close aria-label="Close"><i data-i="close"></i></button>
+  </div>
+  <form id="ins-form" class="ins-form" method="dialog">
+    <input id="ins-ref" type="text" placeholder="e.g. Psalm 23:1-3" aria-label="Verse reference" autocomplete="off">
+    <div id="ins-preview" class="ins-preview muted">Type a reference to preview it.</div>
+    <div class="row">
+      <button type="button" class="chip ghost" data-close>Cancel</button>
+      <button id="ins-ok" class="primary" type="submit" disabled>Insert</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
